@@ -1,0 +1,62 @@
+<Schema name="Ventas ejemplo 2" description="Esquema proyecto ventas olap 2 Joseph Reyes Moreira">
+  <Dimension type="StandardDimension" visible="true" name="Producto">
+    <Hierarchy visible="true" hasAll="true">
+      <Table name="dim_producto" schema="dbo">
+      </Table>
+      <Level name="producto" visible="true" column="id_producto" nameColumn="nombre" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="marca" visible="true" column="id_producto" nameColumn="marca" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+      <Level name="descripcion" visible="true" column="id_producto" nameColumn="descripcion" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Tienda">
+    <Hierarchy visible="true" hasAll="true" primaryKey="id_tienda">
+      <Table name="dim_tienda" schema="dbo" alias="">
+      </Table>
+      <Level name="tienda" visible="true" column="id_tienda" nameColumn="nombre" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="StandardDimension" visible="true" name="Cliente">
+    <Hierarchy visible="true" hasAll="true">
+      <Table name="dim_cliente" schema="dbo" alias="">
+      </Table>
+      <Level name="cliente" visible="true" column="id_cliente" nameColumn="nombre" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Dimension type="TimeDimension" visible="true" name="Tiempo" caption="Dimension Tiempo">
+    <Hierarchy name="A&#241;o_Mes_Dia" visible="true" hasAll="true" allMemberName="All A&#241;os" primaryKey="time_id" caption="A&#241;o - Mes - Dia">
+      <Table name="dim_tiempo" schema="dbo" alias="">
+      </Table>
+      <Level name="Annio" visible="true" column="the_year" type="Integer" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never" captionColumn="the_year">
+      </Level>
+      <Level name="Mes" visible="true" column="month_of_year" type="Integer" uniqueMembers="true" levelType="TimeMonths" hideMemberIf="Never" captionColumn="the_month">
+      </Level>
+      <Level name="Dia" visible="true" column="time_id" type="Integer" uniqueMembers="true" levelType="TimeDays" hideMemberIf="Never" captionColumn="day_of_month">
+      </Level>
+    </Hierarchy>
+  </Dimension>
+  <Cube name="Ventas_2" visible="true" cache="true" enabled="true">
+    <Table name="fact_ventas" schema="dbo" alias="">
+    </Table>
+    <DimensionUsage source="Producto" name="Producto" visible="true" foreignKey="id_producto">
+    </DimensionUsage>
+    <DimensionUsage source="Tienda" name="Tienda" visible="true" foreignKey="id_tienda">
+    </DimensionUsage>
+    <DimensionUsage source="Cliente" name="Cliente" visible="true" foreignKey="id_cliente">
+    </DimensionUsage>
+    <DimensionUsage source="Tiempo" name="Tiempo" visible="true" foreignKey="id_tiempo">
+    </DimensionUsage>
+    <Measure name="Unidades" column="unidades" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Precio" column="precio" datatype="Numeric" formatString="$ #,###.00" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Descuento" column="descuento" datatype="Numeric" formatString="$ #,###.00" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Total" column="total" datatype="Numeric" formatString="$ #,###.00" aggregator="sum" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
